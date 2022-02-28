@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="./style.css">
+
+    <script>
+        let a=false;
+        let b=false;
+        let arr=[-1,-1,-1,-1,-1,-1,-1,-1,-1];
+        var nameOne;
+        var value=true;
+        var nameTwo;
+        var audio= new Audio('sound.wav');
+        var scoreone=0;
+        var scoretwo=0;
+        var alreadyWon=false;
+        
+        function playerone()
+        {
+            nameOne=document.getElementById("player-one-name").value;
+            a=true;
+            if(a==true && b==true)
+            {
+                displayVs(nameOne,nameTwo);
+            }
+        }
+        
+        function playertwo()
+        {
+            nameTwo=document.getElementById("player-two-name").value;
+            b=true;
+            if(a==true && b==true)
+            {
+                displayVs(nameOne,nameTwo);
+            }
+        }
+
+
+        function displayVs(nameOne,nameTwo)
+        {
+            var id=document.getElementById("vs-board");
+            document.getElementById("player-one-vs").innerHTML = nameOne;
+            document.getElementById("vs").innerHTML = "VS";
+            document.getElementById("player-two-vs").innerHTML = nameTwo;
+
+            document.getElementById("player-one-scorecard").innerHTML = nameOne;
+            document.getElementById("player-two-scorecard").innerHTML = nameTwo;
+        }
+
+        function chance(cell)
+        {
+            let idx=giveIndex(cell);
+                if(arr[idx]!=-1||alreadyWon==true)
+                {
+                    // if that position is already occupied
+                    return;
+                }
+                if(value==true)
+                {
+                    var id="cell"+cell;
+                    document.getElementById(id).innerHTML="X";
+                    audio.play();
+                    arr[idx]=1;
+                    if(isAllFill()==true)
+                    {
+                        alert("game is a tie");
+                        return;
+                    }
+                    let xwin=xHasWon();
+                    if(xwin==true)
+                    {
+                        alert(nameOne+" has Won");
+                        alreadyWon=true;
+                        scoreone++;
+                        document.getElementById("scorecardidone").innerHTML=scoreone;
+                        document.getElementById("scorecardidtwo").innerHTML=scoretwo;
+                        return;
+                    }
+                    value=false;
+                }
+                else
+                {
+                    var id="cell"+cell;
+                    arr[idx]=2;
+                    document.getElementById(id).innerHTML = "O";
+                    audio.play();
+                    if(isAllFill()==true)
+                    {
+                        alert("game is a tie");
+                        return;
+                    }
+                    let ywin=yHasWon();
+                    if(ywin==true)
+                    {
+                        alert(nameTwo+" has Won");
+                        alreadyWon=true;
+                        scoretwo++;
+                        document.getElementById("scorecardidone").innerHTML=scoreone;
+                        document.getElementById("scorecardidtwo").innerHTML=scoretwo;
+                        allButtonsUnclickable();
+                        return;
+                    }
+                   
+                    value=true;
+                }
+            
+        }
+        
+        function giveIndex(cell)
+        {
+            if(cell=="one")
+            {
+                return 0;
+            }
+            if(cell=="two")
+            {
+                return 1;
+            }
+            if(cell=="three")
+            {
+                return 2;
+            }
+            if(cell=="four")
+            {
+                return 3;
+            }
+            if(cell=="five")
+            {
+                return 4;
+            }
+            if(cell=="six")
+            {
+                return 5;
+            }
+            if(cell=="seven")
+            {
+                return 6;
+            }
+            if(cell=="eight")
+            {
+                return 7;
+            }
+            if(cell=="nine")
+            {
+                return 8;
+            }
+
+        }
+
+        function xHasWon()
+        {
+            // row cases
+            if(arr[0]==1 && arr[1]==1 && arr[2]==1)
+            {
+                return true;
+            }
+            else if(arr[3]==1 && arr[4]==1 && arr[5]==1)
+            {
+                return true;
+            }
+            else if(arr[6]==1 && arr[7]==1 && arr[8]==1)
+            {
+                return true;
+            }
+
+            // column cases
+            else if(arr[0]==1 && arr[3]==1 && arr[6]==1)
+            {
+                return true;
+            }
+            else if(arr[1]==1 && arr[4]==1 && arr[7]==1)
+            {
+                return true;
+            }
+            else if(arr[2]==1 && arr[5]==1 && arr[8]==1)
+            {
+                return true;
+            }
+
+            //diagonal cases
+            else if(arr[0]==1 && arr[4]==1 && arr[8]==1)
+            {
+                return true;
+            }
+            else if(arr[2]==1 && arr[4]==1 && arr[6]==1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        
+        function yHasWon()
+        {
+            // row cases
+            if(arr[0]==2 && arr[1]==2 && arr[2]==2)
+            {
+                return true;
+            }
+            else if(arr[3]==2 && arr[4]==2 && arr[5]==2)
+            {
+                return true;
+            }
+            else if(arr[6]==2 && arr[7]==2 && arr[8]==2)
+            {
+                return true;
+            }
+
+            // column cases
+            else if(arr[0]==2 && arr[3]==2 && arr[6]==2)
+            {
+                return true;
+            }
+            else if(arr[1]==2 && arr[4]==2 && arr[7]==2)
+            {
+                return true;
+            }
+            else if(arr[2]==2 && arr[5]==2 && arr[8]==2)
+            {
+                return true;
+            }
+
+            //diagonal cases
+            else if(arr[0]==2 && arr[4]==2 && arr[8]==2)
+            {
+                return true;
+            }
+            else if(arr[2]==2 && arr[4]==2 && arr[6]==2)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    
+        function isAllFill()
+        {
+            // used to check if the array is completely filled. If yes then game is a tie  
+
+            for(let i=0;i<9;i++)
+            {
+                if(arr[i]==-1)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function resetAll()
+        {
+            location.reload();
+        }
+
+        function resetgame()
+        {
+            document.getElementById("cellone").innerText="";
+            
+            
+            document.getElementById("celltwo").innerText="";
+            
+            
+            document.getElementById("cellthree").innerText="";
+            
+            
+            document.getElementById("cellfour").innerText="";
+           
+            
+            document.getElementById("cellfive").innerText="";
+           
+            
+            document.getElementById("cellsix").innerText="";
+           
+            
+            document.getElementById("cellseven").innerText="";
+            
+            
+            document.getElementById("celleight").innerText="";
+           
+            
+            document.getElementById("cellnine").innerText="";
+            
+            arr=[-1,-1,-1,-1,-1,-1,-1,-1,-1];
+            value=true;
+            alreadyWon=false;
+
+        }
+
+
+    </script>
+</head>
+<body>
+    <h1 class="big-heading">Tic-Tac-Toe</h1>
+
+    <div class="player-one">
+        <h2>Player-1</h2>
+        <h3>Enter Your Name :</h3>
+        <input type="text" id="player-one-name" autocomplete="on">
+        <button class="btn btn-dark"onclick="playerone()">Submit</button>
+    </div>
+
+    <div class="player-two">
+        <h2>Player-2</h2>
+        <h3>Enter Your Name :</h3>
+        <input type="text" id="player-two-name" autocomplete="on">
+        <button class="btn btn-dark" onclick="playertwo()">Submit</button>
+    </div>
+    <br>
+    <div class="vsboard"id="vs-board">
+        <span id="player-one-vs"></span>
+        <span id="vs"></span>
+        <span id="player-two-vs"></span>
+    </div>
+
+    <div class="game">
+        <div class="row one">
+            <div class="col-4">
+                <button class="butt" id="cellone" type="button" onclick="chance('one')"></button>
+            </div>
+            <div class="col-4">
+                <button class="butt" id="celltwo" onclick="chance('two')"></button>
+            </div>
+            <div class="col-4">
+                <button class="butt" id="cellthree" onclick="chance('three')"></button>
+            </div>
+        </div>
+        <div class="row two">
+            <div class="col-4">
+                <button class="butt" id="cellfour" onclick="chance('four')"></button>
+            </div>
+            <div class="col-4">
+                <button class="butt" id="cellfive" onclick="chance('five')"></button>
+            </div>
+            <div class="col-4">
+                <button class="butt" id="cellsix" onclick="chance('six')"></button>
+            </div>
+        </div>
+        <div class="row three">
+            <div class="col-4">
+                <button class="butt" id="cellseven" onclick="chance('seven')"></button>
+            </div>
+            <div class="col-4">
+                <button class="butt" id="celleight" onclick="chance('eight')"></button>
+            </div>
+            <div class="col-4">
+                <button class="butt" id="cellnine" onclick="chance('nine')"></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="resetbutton">
+        <button class="btn btn-dark" onclick="resetgame()">Replay</button>
+        <button class="btn btn-dark" onclick="resetAll()">Reset</button>
+    </div>
+    <br>
+    <div class="scorecardintro">
+        <h2>Score Card</h2>
+    </div>
+    <div class="row scorecard">
+        <div class="col"></div>
+        <div class="col-6" id="player-one-scorecard"><p></p></div>
+        <div class="col-6" id="player-two-scorecard"><p></p></div>
+        <div class="col"></div>
+    </div>
+    <div class="row scorecard">
+        <div class="col"></div>
+        <div class="col-6" id="scorecardidone"><p></p></div>
+        <div class="col-6" id="scorecardidtwo"><p></p></div>
+        <div class="col"></div>
+    </div>
+
+
+</body>
+</html>
